@@ -6,21 +6,19 @@ import java.util.*;
 public class ExecuteClass {
     public static void main(String[] args) {
 
-        HashMap <String, Integer> hashMap1 = new HashMap<String, Integer>();
+        HashMap<String, Integer> hashMap1 = new HashMap<String, Integer>();
         ArrayList<String> fileRecords = new ArrayList();
 
-        try(FileReader reader = new FileReader("Input.txt"))
-        {
+        try (FileReader reader = new FileReader("Input.txt")) {
             BufferedReader bufferedReader = new BufferedReader(reader);
 
             String s;
-            while((s = bufferedReader.readLine()) != null){
+            while ((s = bufferedReader.readLine()) != null) {
 
                 fileRecords.add(s);
                 System.out.println(s);
             }
-        }
-        catch(IOException ex){
+        } catch (IOException ex) {
 
             System.out.println(ex.getMessage());
         }
@@ -32,33 +30,47 @@ public class ExecuteClass {
         System.out.println(getSortWordsV1(fileRecords));
 
         System.out.print("\n Sort V2(Lambda) Words is ");
-        System.out.println(getSortWordsV1(fileRecords));
+        System.out.println(getSortWordsV2(fileRecords));
+
+        System.out.print("\n Words with their count is: ");
+        System.out.println(getNumberOfWords(fileRecords));
+
+        System.out.println("\n Revers fileRecords is :");
+        for (String s: reverse(fileRecords)
+             ) {
+            System.out.println(s);
+        }
 
 
-        
+        System.out.println("\n Revers fileRecords with Iterator is :");
+        Iterator<String> iterator = new FileRecordsIterator(fileRecords);
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
 
+        }
 
     }
 
-    public static int getCountOfWords(ArrayList<String> list){
+    public static int getCountOfWords(ArrayList<String> list) {
         Set<String> set = new HashSet<>();
         int count = 0;
-        for (String s: list
-             ) {
+        for (String s : list
+        ) {
             String[] words;
             words = s.split(" ");
-            for (String word: words
-                 ) {
+            for (String word : words
+            ) {
                 if (set.add(word)) {
                     count++;
                 }
             }
-        };
+        }
+        ;
 
         return count;
     }
 
-    public static Set<String> getSortWordsV1(ArrayList<String> list){
+    public static Set<String> getSortWordsV1(ArrayList<String> list) {
 
         //Set<String> set = new TreeSet<>((o1, o2) -> o1.compareTo(o2.))
 
@@ -66,39 +78,41 @@ public class ExecuteClass {
         //Set<String> set = new TreeSet<>(comparatorOfWordsLength);
         Set<String> set = new TreeSet<>(new ComparatorOfWordsLength());
 
-        for (String s: list
+        for (String s : list
         ) {
             String[] words;
             words = s.split(" ");
-            for (String word: words
+            for (String word : words
             ) {
                 set.add(word);
             }
-        };
+        }
+        ;
 
         return set;
 
     }
 
 
-    public static Set<String> getSortWordsV2(ArrayList<String> list){
+    public static Set<String> getSortWordsV2(ArrayList<String> list) {
 
         //Set<String> set = new TreeSet<>((o1, o2) -> o1.compareTo(o2.))
 
         //ComparatorOfWordsLength comparatorOfWordsLength = new ComparatorOfWordsLength();
         //Set<String> set = new TreeSet<>(comparatorOfWordsLength);
         Set<String> set = new TreeSet<String>((String o1, String o2) ->
-            (o1.length() < o2.length() ? -1 : ((o1.length() == o2.length()) ? o1.compareTo(o2) : 1)));
+                (o1.length() < o2.length() ? -1 : ((o1.length() == o2.length()) ? o1.compareTo(o2) : 1)));
 
-        for (String s: list
+        for (String s : list
         ) {
             String[] words;
             words = s.split(" ");
-            for (String word: words
+            for (String word : words
             ) {
                 set.add(word);
             }
-        };
+        }
+        ;
 
         return set;
 
@@ -108,27 +122,27 @@ public class ExecuteClass {
 
         HashMap<String, Integer> map = new HashMap<>();
 
-        for (String s: list
+        for (String s : list
         ) {
             String[] words;
             words = s.split(" ");
-            for (String word: words
+            for (String word : words
             ) {
                 Integer i;
                 if ((i = map.get(word)) == null) {
-                    map.put(word, new Integer(1));
+                    map.put(word, 1);
+                } else {
+                    map.put(word, i + 1);
                 }
-                else
-                {
-                    i++;
-                }
-
             }
-        };
-
+        }
         return map;
+    }
 
-    )
+    public static ArrayList<String> reverse(ArrayList<String> list){
+        Collections.reverse(list);
+        return list;
+    }
 
 
 }
